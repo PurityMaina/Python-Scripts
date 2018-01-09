@@ -1,0 +1,32 @@
+import csv
+import xlrd
+import datetime
+
+
+# open file
+def open_excel_sheet(path):
+    workbook = xlrd.open_workbook("file.xlsx")
+    worksheet = workbook.sheet_by_name('Sheet2')
+    num_rows = worksheet.nrows - 1
+    num_cells = worksheet.ncols - 1
+    curr_row = -1
+    curr_cell =-1
+
+    while curr_cell < num_cells:
+
+        curr_row += 3 #start reading from 3rd row.
+        row = worksheet.row(curr_row)
+       
+        #convert string date from excel sheet to python datetime
+        instalment_date = row[11].value
+        instalment =  datetime.datetime.strptime(instalment_date,"%d.%m.%Y")
+        instalments=instalment.date()
+        today= datetime.date.today()
+
+        #get days left before due date from today
+        days_left = today- instalments
+        print days_left
+
+if __name__ == "__main__":
+    path = "file.xlsx"
+    open_excel_sheet(path)
